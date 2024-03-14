@@ -11,21 +11,26 @@ export default function Profile() {
   const SF = import.meta.env.VITE_APP_SRC_FOLDER;
   const [user, setUser] = useState({});
   const username = useParams().username;
+  console.log(username);
   const REQUEST_URL = "http://localhost:3000/api/";
 
   useEffect(() => {
+    console.log("useEffect called");
     const fetchUser = async () => {
       try {
+        console.log("entered try");
         const response = await axios.get(
           `${REQUEST_URL}users?username=${username}`
         );
+        console.log(response);
+        console.log(response.data);
         setUser(response.data);
       } catch (err) {
         console.log(err);
       }
     };
     fetchUser();
-  }, [username]);
+  }, []);
 
   return (
     <>

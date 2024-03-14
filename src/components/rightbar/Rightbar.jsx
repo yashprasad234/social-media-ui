@@ -13,7 +13,7 @@ export default function Rightbar({ user }) {
   const { user: currentUser, dispatch } = useContext(AuthContext);
   const [friends, setFriends] = useState([]);
   const [isFollowed, setIsFollowed] = useState(
-    currentUser.following.includes(user?._id)
+    currentUser.following.includes(user?._id) //
   );
   const REQUEST_URL = "http://localhost:3000/api/";
 
