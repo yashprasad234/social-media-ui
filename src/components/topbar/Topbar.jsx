@@ -27,8 +27,8 @@ export default function Topbar() {
       </div>
       <div className="topbarRight">
         <div className="topbarLinks">
-          <div className="topbarLink">Homepage</div>
-          <div className="topbarLink">Timeline</div>
+          <span className="topbarLink">Homepage</span>
+          <span className="topbarLink">Timeline</span>
         </div>
         <div className="topbarIcons">
           <div className="topbarIconItem">
@@ -44,14 +44,14 @@ export default function Topbar() {
             <span className="topbarIconBadge">1</span>
           </div>
         </div>
-        <Link to={`profile/${user.username}`}>
+        <Link to={`/profile/${user.username}`}>
           <img
             src={
               user?.profilePicture
                 ? SF + user.profilePicture
                 : SF + "person/noAvatar.png"
             }
-            alt="person-1"
+            alt="person"
             className="topbarImg"
           />
         </Link>

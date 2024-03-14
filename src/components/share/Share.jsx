@@ -15,16 +15,17 @@ export default function Share() {
   const { user } = useContext(AuthContext);
   const desc = useRef();
   const [file, setFile] = useState(null);
-  const REQUEST_URL = "http://localhost:3000/";
+  const REQUEST_URL = "http://localhost:3000/api/";
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const newPost = {
       userId: user._id,
       desc: desc.current.value,
     };
     try {
-      await axios.post(`${REQUEST_URL}api/posts`, newPost);
+      await axios.post(`${REQUEST_URL}posts`, newPost);
+      window.location.reload();
     } catch (err) {
       console.log(err);
     }
@@ -40,7 +41,7 @@ export default function Share() {
                 ? SF + user.profilePicture
                 : SF + "person/noAvatar.png"
             }
-            alt="beautiful-women"
+            alt="post-img"
             className="shareProfileImg"
           />
           <input

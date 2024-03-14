@@ -13,7 +13,7 @@ export default function Post({ post }) {
   const [user, setUser] = useState({});
   const SF = import.meta.env.VITE_APP_SRC_FOLDER;
   const { user: currentUser } = useContext(AuthContext);
-  const REQUEST_URL = "http://localhost:3000/";
+  const REQUEST_URL = "http://localhost:3000/api/";
 
   useEffect(() => {
     setIsLiked(post.likes.includes(currentUser._id));
@@ -21,7 +21,7 @@ export default function Post({ post }) {
 
   useEffect(() => {
     const fetchUser = async () => {
-      const res = await axios.get(`/users?userId=${post.userId}`);
+      const res = await axios.get(`${REQUEST_URL}/users?userId=${post.userId}`);
       setUser(res.data);
     };
     fetchUser();
@@ -29,7 +29,7 @@ export default function Post({ post }) {
 
   const likeHandler = async () => {
     try {
-      await axios.put(`${REQUEST_URL}api/posts/${post._id}/like`, {
+      await axios.put(`${REQUEST_URL}posts/${post._id}/like`, {
         userId: currentUser._id,
       });
     } catch (err) {
@@ -88,7 +88,7 @@ export default function Post({ post }) {
             <span className="postLikeCounter">{like} people liked it</span>
           </div>
           <div className="postBottomRight">
-            <div className="postCommentText">{post.comment} comments</div>
+            <span className="postCommentText">{post.comment} comments</span>
           </div>
         </div>
       </div>

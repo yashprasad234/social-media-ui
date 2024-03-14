@@ -15,19 +15,13 @@ export default function Rightbar({ user }) {
   const [isFollowed, setIsFollowed] = useState(
     currentUser.following.includes(user?._id)
   );
-  const REQUEST_URL = "http://localhost:3000/";
-
-  // console.log(user);
-
-  useEffect(() => {
-    setIsFollowed(currentUser.following.includes(user?._id));
-  }, [currentUser, user]);
+  const REQUEST_URL = "http://localhost:3000/api/";
 
   useEffect(() => {
     const getFriends = async () => {
       try {
         const friendList = await axios.get(
-          `${REQUEST_URL}api/users/friends/${user._id}`
+          `${REQUEST_URL}users/friends/${user._id}`
         );
         setFriends(friendList.data);
       } catch (err) {
@@ -40,12 +34,12 @@ export default function Rightbar({ user }) {
   const handleFollow = async () => {
     try {
       if (isFollowed) {
-        await axios.put(`${REQUEST_URL}api/users/${user._id}/unfollow`, {
+        await axios.put(`${REQUEST_URL}users/${user._id}/unfollow`, {
           userId: currentUser._id,
         });
         dispatch({ type: "UNFOLLOW", payload: user._id });
       } else {
-        await axios.put(`${REQUEST_URL}api/users/${user._id}/follow`, {
+        await axios.put(`${REQUEST_URL}users/${user._id}/follow`, {
           userId: currentUser._id,
         });
         dispatch({ type: "FOLLOW", payload: user._id });
@@ -88,22 +82,22 @@ export default function Rightbar({ user }) {
         <h4 className="rightbarTitle">User Information</h4>
         <div className="rightbarInfo">
           <div className="rightbarInfoItem">
-            <div className="rightbarInfoKey">City:</div>
-            <div className="rightbarInfoValue">{user.city}</div>
+            <span className="rightbarInfoKey">City:</span>
+            <span className="rightbarInfoValue">{user.city}</span>
           </div>
           <div className="rightbarInfoItem">
-            <div className="rightbarInfoKey">From:</div>
-            <div className="rightbarInfoValue">{user.from}</div>
+            <span className="rightbarInfoKey">From:</span>
+            <span className="rightbarInfoValue">{user.from}</span>
           </div>
           <div className="rightbarInfoItem">
-            <div className="rightbarInfoKey">Relationship:</div>
-            <div className="rightbarInfoValue">
+            <span className="rightbarInfoKey">Relationship:</span>
+            <span className="rightbarInfoValue">
               {user.relationship === 1
                 ? "Single"
                 : user.relationship === 2
                 ? "Married"
                 : "-"}
-            </div>
+            </span>
           </div>
         </div>
         <h4 className="rightbarTitle">User friends</h4>

@@ -10,15 +10,14 @@ import { useParams } from "react-router-dom";
 export default function Profile() {
   const SF = import.meta.env.VITE_APP_SRC_FOLDER;
   const [user, setUser] = useState({});
-  const params = useParams();
-  const username = params.username;
-  const REQUEST_URL = "http://localhost:3000/";
+  const username = useParams().username;
+  const REQUEST_URL = "http://localhost:3000/api/";
 
   useEffect(() => {
     const fetchUser = async () => {
       try {
         const response = await axios.get(
-          `${REQUEST_URL}api/users?username=${username}`
+          `${REQUEST_URL}users?username=${username}`
         );
         setUser(response.data);
       } catch (err) {
@@ -40,7 +39,7 @@ export default function Profile() {
                 src={
                   user.coverPicture
                     ? `${SF}${user.coverPicture}`
-                    : `${SF}/person/noCover.png`
+                    : `${SF}person/noCover.png`
                 }
                 alt="cover-img"
                 className="profileCoverImg"
@@ -49,7 +48,7 @@ export default function Profile() {
                 src={
                   user.profilePicture
                     ? `${SF}${user.profilePicture}`
-                    : `${SF}/person/noAvatar.png`
+                    : `${SF}person/noAvatar.png`
                 }
                 alt="profile-img"
                 className="profileUserImg"

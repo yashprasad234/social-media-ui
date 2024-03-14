@@ -9,10 +9,11 @@ export default function Register() {
   const username = useRef();
   const password = useRef();
   const confirmPassword = useRef();
-  const navigate = useNavigate();
-  const REQUEST_URL = "http://localhost:3000/";
   const [passwordHidden, setPasswordHidden] = useState(true);
   const [confirmPasswordHidden, setConfirmPasswordHidden] = useState(true);
+  const navigate = useNavigate();
+
+  const REQUEST_URL = "http://localhost:3000/api/";
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -25,7 +26,7 @@ export default function Register() {
         password: password.current.value,
       };
       try {
-        await axios.post(`${REQUEST_URL}api/auth/register`, user);
+        await axios.post(`${REQUEST_URL}auth/register`, user);
         navigate("/login");
       } catch (err) {
         console.log(err);
@@ -114,7 +115,9 @@ export default function Register() {
                   />
                 )}
               </span>
-              <button className="registerButton">Sign Up</button>
+              <button className="registerButton" type="submit">
+                Sign Up
+              </button>
             </form>
             <button
               className="registerLoginButton"

@@ -8,14 +8,14 @@ import { AuthContext } from "../../context/AuthContext";
 export default function Feed({ username }) {
   const [posts, setPosts] = useState([]);
   const { user } = useContext(AuthContext);
-  const REQUEST_URL = "http://localhost:3000/";
+  const REQUEST_URL = "http://localhost:3000/api/";
 
   useEffect(() => {
     const fetchPosts = async () => {
       try {
         const res = username
-          ? await axios.get(`${REQUEST_URL}api/posts/profile/${username}`)
-          : await axios.get(`${REQUEST_URL}api/posts/timeline/${user._id}`);
+          ? await axios.get(`${REQUEST_URL}posts/profile/${username}`)
+          : await axios.get(`${REQUEST_URL}posts/timeline/${user._id}`);
         setPosts(
           res.data.sort((p1, p2) => {
             return new Date(p2.createdAt) - new Date(p1.createdAt);

@@ -10,22 +10,15 @@ export default function Login() {
   const email = useRef();
   const password = useRef();
   const navigate = useNavigate();
-  const { user, isFetching, error, dispatch } = useContext(AuthContext);
+  const { isFetching, dispatch } = useContext(AuthContext);
   const [passwordHidden, setPasswordHidden] = useState(true);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    try {
-      const res = await loginCall(
-        { email: email.current.value, password: password.current.value },
-        dispatch
-      );
-      console.log(res.data);
-      navigate("/");
-    } catch (err) {
-      console.log(err);
-    }
+    loginCall(
+      { email: email.current.value, password: password.current.value },
+      dispatch
+    );
   };
 
   console.log(user);
@@ -88,7 +81,6 @@ export default function Login() {
             <span className="loginForgot">Forgot Password?</span>
             <button
               className="loginRegisterButton"
-              disabled={isFetching}
               onClick={() => navigate("/register")}
             >
               {isFetching ? (
