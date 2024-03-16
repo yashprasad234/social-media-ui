@@ -10,14 +10,18 @@ import axios from "axios";
 export default function Messenger() {
   const REQUEST_URL = "http://localhost:3000/api/";
   const [conversations, setConversations] = useState([]);
+  const [currentChat, setCurrentChat] = useState(null);
+  const [messages, setMessages] = useState([]);
   const { user } = useContext(AuthContext);
+
+  console.log(user);
+  console.log(user._id);
 
   useEffect(() => {
     const fetchConversations = async () => {
       try {
-        const res = await axios.get(
-          `${REQUEST_URL}conversations/${user._id.$oid}`
-        );
+        const res = await axios.get(`${REQUEST_URL}conversations/${user._id}`);
+        console.log(res);
         setConversations(res.data);
       } catch (err) {
         console.log(error);
@@ -44,21 +48,29 @@ export default function Messenger() {
         </div>
         <div className="chatBox">
           <div className="chatBoxWrapper">
-            <div className="chatBoxTop">
-              <Message />
-              <Message own={true} />
-              <Message />
-              <Message own={true} />
-              <Message />
-              <Message own={true} />
-              <Message />
-              <Message own={true} />
-              <Message />
-              <Message own={true} />
-              <Message />
-              <Message own={true} />
-              <Message />
-            </div>
+            {currentChat ? (
+              <>
+                <div className="chatBoxTop">
+                  <Message />
+                  <Message own={true} />
+                  <Message />
+                  <Message own={true} />
+                  <Message />
+                  <Message own={true} />
+                  <Message />
+                  <Message own={true} />
+                  <Message />
+                  <Message own={true} />
+                  <Message />
+                  <Message own={true} />
+                  <Message />
+                </div>
+              </>
+            ) : (
+              <span className="noConversationText">
+                Open a conversation to start a chat.
+              </span>
+            )}
             <div className="chatBoxBottom">
               <textarea
                 placeholder="write something..."

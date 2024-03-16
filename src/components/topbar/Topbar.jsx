@@ -1,12 +1,13 @@
 import "./topbar.css";
 import { Notifications, Person, Search, Chat } from "@mui/icons-material";
 import { useContext } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { AuthContext } from "../../context/AuthContext";
 
 export default function Topbar() {
   const SF = import.meta.env.VITE_APP_SRC_FOLDER;
   const { user } = useContext(AuthContext);
+  const navigate = useNavigate();
 
   return (
     <div className="topbarContainer">
@@ -27,7 +28,9 @@ export default function Topbar() {
       </div>
       <div className="topbarRight">
         <div className="topbarLinks">
-          <span className="topbarLink">Homepage</span>
+          <span className="topbarLink" onClick={() => navigate("/messenger")}>
+            Homepage
+          </span>
           <span className="topbarLink">Timeline</span>
         </div>
         <div className="topbarIcons">
@@ -45,8 +48,6 @@ export default function Topbar() {
           </div>
         </div>
         <Link to={`/profile/${user.username}`}>
-          {" "}
-          //
           <img
             src={
               user?.profilePicture

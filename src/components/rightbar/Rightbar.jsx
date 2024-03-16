@@ -17,20 +17,6 @@ export default function Rightbar({ user }) {
   );
   const REQUEST_URL = "http://localhost:3000/api/";
 
-  useEffect(() => {
-    const getFriends = async () => {
-      try {
-        const friendList = await axios.get(
-          `${REQUEST_URL}users/friends/${user._id}`
-        );
-        setFriends(friendList.data);
-      } catch (err) {
-        console.log(err);
-      }
-    };
-    getFriends();
-  }, [user]);
-
   const handleFollow = async () => {
     try {
       if (isFollowed) {
@@ -71,6 +57,20 @@ export default function Rightbar({ user }) {
   };
 
   const ProfileRightbar = () => {
+    useEffect(() => {
+      const getFriends = async () => {
+        try {
+          const friendList = await axios.get(
+            `${REQUEST_URL}users/friends/${user._id}`
+          );
+          setFriends(friendList.data);
+        } catch (err) {
+          console.log(err);
+        }
+      };
+      getFriends();
+    }, [user]);
+
     return (
       <>
         {user.username !== currentUser.username && (

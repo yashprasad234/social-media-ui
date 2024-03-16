@@ -5,13 +5,18 @@ import axios from "axios";
 export default function Conversation({ conv, currentUser }) {
   const REQUEST_URL = "http://localhost:3000/api/";
   const [user, setUser] = useState(null);
+  const SF = import.meta.env.VITE_APP_SRC_FOLDER;
+
+  console.log(conv._id);
 
   useEffect(() => {
+    console.log(currentUser);
     const friendId = conv.members.find((m) => m !== currentUser._id);
-    console.log(conv._id);
+    console.log(friendId);
     const getUser = async () => {
       try {
-        const res = await axios(`${REQUEST_URL}users?userId=${friendId}`);
+        const res = await axios.get(`${REQUEST_URL}users?userId=${friendId}`);
+        console.log(res.data);
         setUser(res.data);
       } catch (err) {
         console.log(err);
@@ -20,14 +25,20 @@ export default function Conversation({ conv, currentUser }) {
     getUser();
   }, [currentUser, conv]);
 
+  console.log(user);
+
   return (
     <div className="conversation">
       <img
-        src="https://images.pexels.com/photos/4061662/pexels-photo-4061662.jpeg"
+        src={
+          user.profilePicture
+            ? SF + user.profilePicture
+            : SF + "person/noAvatar.png"
+        }
         alt="groot"
         className="coversationImg"
       />
-      <span className="conversationName">Groot </span>
+      <span className="conversationName">{user.username}</span>
     </div>
   );
 }
