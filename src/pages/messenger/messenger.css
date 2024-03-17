@@ -28,6 +28,7 @@
 .chatBoxWrapper {
   display: flex;
   flex-direction: column;
+  position: relative;
 }
 
 .chatBoxTop {
@@ -59,10 +60,6 @@
 
 .chatOnline {
   flex: 3;
-}
-
-.chatBoxWrapper {
-  position: relative;
 }
 
 .noConversationText {

@@ -9,8 +9,9 @@ export default function Conversation({ conv, currentUser }) {
 
   console.log(conv._id);
 
+  console.log(currentUser);
   useEffect(() => {
-    console.log(currentUser);
+    console.log("hello, im in useEffect");
     const friendId = conv.members.find((m) => m !== currentUser._id);
     console.log(friendId);
     const getUser = async () => {
@@ -31,14 +32,14 @@ export default function Conversation({ conv, currentUser }) {
     <div className="conversation">
       <img
         src={
-          user.profilePicture
+          user?.profilePicture
             ? SF + user.profilePicture
             : SF + "person/noAvatar.png"
         }
         alt="groot"
         className="coversationImg"
       />
-      <span className="conversationName">{user.username}</span>
+      <span className="conversationName">{user?.username}</span>
     </div>
   );
 }
