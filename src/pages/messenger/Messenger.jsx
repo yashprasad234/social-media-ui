@@ -6,6 +6,7 @@ import ChatOnline from "../../components/chatOnline/ChatOnline.jsx";
 import { useContext, useEffect, useRef, useState } from "react";
 import { AuthContext } from "../../context/AuthContext.jsx";
 import axios from "axios";
+import { io } from "socket.io-client";
 
 export default function Messenger() {
   const REQUEST_URL = "http://localhost:3000/api/";
@@ -13,11 +14,37 @@ export default function Messenger() {
   const [currentChat, setCurrentChat] = useState(null);
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState("");
+  const [arrivalMessage, setArrivalMessage] = useState(null);
+  const socket = useRef(io("ws://localhost:8800"));
   const { user } = useContext(AuthContext);
   const scrollRef = useRef();
 
   // console.log(user);
   // console.log(user._id);
+
+  useEffect(() => {
+    socket.current = io("ws://localhost:8800");
+    socket.current.on("getMessage", (data) => {
+      setArrivalMessage({
+        sender: data.senderId,
+        text: data.text,
+        createdAt: Date.now(),
+      });
+    });
+  }, []);
+
+  useEffect(() => {
+    arrivalMessage &&
+      currentChat?.members.includes(arrivalMessage.sender) &&
+      setMessages((prev) => [...prev, arrivalMessage]);
+  }, [arrivalMessage, currentChat]);
+
+  useEffect(() => {
+    socket.current.emit("addUser", user._id);
+    socket.current.on("getUsers", (users) => {
+      console.log(users);
+    });
+  }, [user]);
 
   useEffect(() => {
     const fetchConversations = async () => {
@@ -46,7 +73,11 @@ export default function Messenger() {
     getMessages();
   }, [currentChat]);
 
-  console.log(messages);
+  // console.log(messages);
+
+  useEffect(() => {
+    scrollRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [messages]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -55,6 +86,16 @@ export default function Messenger() {
       text: newMessage,
       conversationId: currentChat._id,
     };
+
+    const recieverId = currentChat.members.find((m) => m !== user._id);
+    console.log(user._id, recieverId, newMessage);
+
+    socket.current.emit("sendMessage", {
+      senderId: user._id,
+      recieverId,
+      text: newMessage,
+    });
+
     try {
       const res = await axios.post(`${REQUEST_URL}messages`, message);
       setMessages([...messages, res.data]);
@@ -63,10 +104,6 @@ export default function Messenger() {
       console.log(err);
     }
   };
-
-  useEffect(() => {
-    scrollRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, [messages]);
 
   return (
     <>
@@ -92,7 +129,7 @@ export default function Messenger() {
               <>
                 <div className="chatBoxTop">
                   {messages.map((m) => (
-                    <div key={m.sender} ref={scrollRef}>
+                    <div key={m._id} ref={scrollRef}>
                       <Message message={m} own={m.sender === user._id} />
                     </div>
                   ))}
