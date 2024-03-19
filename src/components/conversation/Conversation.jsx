@@ -7,17 +7,17 @@ export default function Conversation({ conv, currentUser }) {
   const [user, setUser] = useState(null);
   const SF = import.meta.env.VITE_APP_SRC_FOLDER;
 
-  console.log(conv._id);
+  // console.log(conv._id);
 
-  console.log(currentUser);
+  // console.log(currentUser);
   useEffect(() => {
-    console.log("hello, im in useEffect");
+    // console.log("hello, im in useEffect");
     const friendId = conv.members.find((m) => m !== currentUser._id);
-    console.log(friendId);
+    // console.log(friendId);
     const getUser = async () => {
       try {
         const res = await axios.get(`${REQUEST_URL}users?userId=${friendId}`);
-        console.log(res.data);
+        // console.log(res.data);
         setUser(res.data);
       } catch (err) {
         console.log(err);
@@ -26,7 +26,7 @@ export default function Conversation({ conv, currentUser }) {
     getUser();
   }, [currentUser, conv]);
 
-  console.log(user);
+  // console.log(user);
 
   return (
     <div className="conversation">
