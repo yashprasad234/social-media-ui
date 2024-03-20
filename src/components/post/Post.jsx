@@ -5,12 +5,13 @@ import axios from "axios";
 import { format } from "timeago.js";
 import { Link } from "react-router-dom";
 import { AuthContext } from "../../context/AuthContext";
-import { ReactionBarSelector } from "@charkour/react-reactions";
+import { FacebookSelector } from "@charkour/react-reactions";
 
 export default function Post({ post }) {
   const [like, setLike] = useState(post.likes.length);
   const [isLiked, setIsLiked] = useState(false);
   const [user, setUser] = useState({});
+  const [displayReactionBar, setDisplayReactionBar] = useState(false);
   const SF = import.meta.env.VITE_APP_SRC_FOLDER;
   const { user: currentUser } = useContext(AuthContext);
   const REQUEST_URL = "http://localhost:3000/api/";
@@ -72,19 +73,21 @@ export default function Post({ post }) {
         </div>
         <div className="postBottom">
           <div className="postBottomLeft">
-            <img
-              src={SF + "like.png"}
-              alt="likeIcon"
-              className="likeIcon"
-              onClick={likeHandler}
-            />
-            <img
-              src={SF + "heart.png"}
-              alt="hearIcon"
-              className="likeIcon"
-              onClick={likeHandler}
-            />
-            <ReactionBarSelector />
+            <div
+              onMouseEnter={() => setDisplayReactionBar(true)}
+              onMouseLeave={() => setDisplayReactionBar(false)}
+            >
+              {displayReactionBar ? (
+                <FacebookSelector />
+              ) : (
+                <img
+                  src={SF + "like.png"}
+                  alt="likeIcon"
+                  className="likeIcon"
+                  onClick={likeHandler}
+                />
+              )}
+            </div>
             <span className="postLikeCounter">{like} people liked it</span>
           </div>
           <div className="postBottomRight">

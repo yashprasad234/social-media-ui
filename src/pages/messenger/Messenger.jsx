@@ -92,12 +92,13 @@ export default function Messenger() {
 
     const recieverId = currentChat.members.find((m) => m !== user._id);
     console.log(user._id, recieverId, newMessage);
-
-    socket.current.emit("sendMessage", {
+    const sendMessageArgs = {
       senderId: user._id,
-      recieverId,
+      receiverId: recieverId,
       text: newMessage,
-    });
+    };
+    console.log(sendMessageArgs);
+    socket.current.emit("sendMessage", sendMessageArgs);
 
     try {
       const res = await axios.post(`${REQUEST_URL}messages`, message);
